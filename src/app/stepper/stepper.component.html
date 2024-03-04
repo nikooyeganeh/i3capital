@@ -1,0 +1,48 @@
+<div class="flex justify-between bg-gray min-h-screen py-4 px-6">
+  <div
+    *ngFor="let item of stepperItems; index as i"
+    [ngClass]="{ 'before:bg-primary': currentStepp > i }"
+    class="w-full cursor-pointer px-4 relative before:content-[''] before:absolute before:w-[calc(100%-82px)] before:h-px before:bg-darkGray before:left-0 before:top-[25px] last:before:hidden last:w-auto"
+  >
+    <div class="z-10 relative">
+      <div
+        (click)="currentStepp = i; currentSubStep = 1"
+        [ngClass]="{ 'border-primary': currentStepp >= i }"
+        class="w-12 h-12 rounded-full border border-darkGray inline-flex justify-center items-center bg-white mb-1"
+      >
+        <mat-icon
+          svgIcon="{{ currentStepp >= i ? item.icon : item.icon + 'Disabled' }}"
+          class="h-5"
+        ></mat-icon>
+      </div>
+      <div
+        class="text-darkGray whitespace-nowrap"
+        [ngClass]="{
+          'font-bold': currentStepp === i,
+          'text-primary': currentStepp >= i
+        }"
+      >
+        {{ item.title }}
+      </div>
+    </div>
+    <ng-container *ngIf="item.subStep && currentStepp === i">
+      <div
+        *ngFor="let subStep of item.subStep; index as j"
+        class="text-darkGray flex items-center mt-1 cursor-pointer"
+        (click)="currentSubStep = j + 1"
+      >
+        <div
+          class="w-4 h-4 border border-darkGray rounded-full me-2 mt-[5px] relative"
+        >
+          <div
+            *ngIf="currentSubStep > j"
+            class="bg-success before:content-['√'] before:text-sm before:absolute before:text-white before:left-[2px] before:-top-1 w-full h-full rounded-full"
+          ></div>
+        </div>
+        <div class="text-sm" [ngClass]="{ 'text-black': currentSubStep > j }">
+          {{ subStep.title }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
